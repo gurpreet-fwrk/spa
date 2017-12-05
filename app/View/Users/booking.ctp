@@ -142,18 +142,44 @@
             <?php } ?>
 
             <?php
+//            if($loggeduser == $order['Order']['uid']){
+//            $current_date = date('d-m-Y');
+//            $booking_date = $order['Order']['booking_date'];
+//            
+//            $current_datetime = time();
+//            $booking_date = strtotime($order['Order']['booking_date']);
+//            
+//            if($current_date != $booking_date && $current_datetime < $booking_date){ ?>
+            <?php //echo $this->Form->postLink('Cancel Booking', array('action' => 'cancelOrder', $order["Order"]["id"]), array('class' => 'btn defult_btn btn_chdpwd'), __('Are you sure you want to cancel this order?', $order["Order"]["id"])); ?>
+            <?php //} ?>
+            
+            <?php //} ?>
+            
+            <?php
             if($loggeduser == $order['Order']['uid']){
-            $current_date = date('d-m-Y');
-            $booking_date = $order['Order']['booking_date'];
-            
-            $current_datetime = time();
-            $booking_date = strtotime($order['Order']['booking_date']);
-            
-            if($current_date != $booking_date && $current_datetime < $booking_date){ ?>
-            <?php echo $this->Form->postLink('Cancel Booking', array('action' => 'cancelOrder', $order["Order"]["id"]), array('class' => 'btn defult_btn btn_chdpwd'), __('Are you sure you want to cancel this order?', $order["Order"]["id"])); ?>
+                $current_date = time();
+                
+                
+                $booking_date = date('Y-m-d', strtotime($order['Order']['booking_date']));
+                $booking_time = date('H:i:s', strtotime($order['Order']['start_time']));
+                
+                
+                $final_booking_time = date(strtotime($order['Order']['booking_date'].' '.$order['Order']['start_time']));
+                
+                //round(abs($current_date - $final_booking_time) / 60,2). " minute"; echo '<br>';
+                
+                $minutes = round(abs($current_date - $final_booking_time) / 60,2);
+                
+                echo $hours = ($minutes) / 60; //echo ' Hours Left<br>';
+                
+                if($hours > 24){
+                    echo $this->Form->postLink('Cancel Booking', array('action' => 'cancelOrder', $order["Order"]["id"]), array('class' => 'btn defult_btn btn_chdpwd'), __('Are you sure you want to cancel this order?', $order["Order"]["id"]));
+                }
+                
+            ?>
             <?php } ?>
             
-            <?php } ?>
+            
           </div>
         </div>
       </div>

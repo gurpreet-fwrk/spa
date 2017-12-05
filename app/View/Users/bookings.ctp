@@ -60,10 +60,36 @@
                             <option value="completed">Completed</option>
                             <?php } ?>
                             
+                            <?php
+                            $current_date = time();
+
+
+                            $booking_date = date('Y-m-d', strtotime($order['Order']['booking_date']));
+                            $booking_time = date('H:i:s', strtotime($order['Order']['start_time']));
+
+
+                            $final_booking_time = date(strtotime($order['Order']['created']));
+
+                            //round(abs($current_date - $final_booking_time) / 60,2). " minute"; echo '<br>';
+
+                            $minutes = round(abs($current_date - $final_booking_time) / 60,2);
+
+                            echo $hours = ($minutes) / 60; //echo ' Hours Left<br>';
+
+                            if($hours < 24){
+
+                                ?>
+
                             <?php if($order['Order']['service_status'] == 'cancelled'){ ?>
                             <option value="cancelled" selected="selected">Cancelled</option>
-                            <?php } else { ?>
+                            <?php } else { ?>   
                             <option value="cancelled">Cancelled</option>
+                            <?php } ?>
+
+                            <?php }else{ ?>
+                            <?php if($order['Order']['service_status'] == 'cancelled'){ ?>
+                            <option value="cancelled" selected="selected">Cancelled</option>
+                            <?php } ?>
                             <?php } ?>
                         </select>
                         <?php } ?>

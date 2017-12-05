@@ -249,7 +249,7 @@ configure::write('debug', 2);
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://www.paypal.com/cgi-bin/webscr');
+        curl_setopt($ch, CURLOPT_URL, 'https://www.sandbox.paypal.com/cgi-bin/webscr');
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
 
@@ -263,7 +263,7 @@ configure::write('debug', 2);
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www.paypal.com'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www.developer.paypal.com'));
 
         $res = curl_exec($ch);
 
@@ -880,13 +880,13 @@ configure::write('debug', 2);
 
 			///////////////////////////////////////////////payment////////////////////////////////////////////////
 
-			echo ".<form name=\"_xclick\" action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\">
+			echo ".<form name=\"_xclick\" action=\"https://www.sandbox.paypal.com/cgi-bin/webscr\" method=\"post\">
 
 			<input type=\"hidden\" name=\"cmd\" value=\"_xclick\">
 
 			<input type=\"hidden\" name=\"email\" value=\"$price\">
 
-			<input type=\"hidden\" name=\"business\" value=\"phoebewhite.8@gmail.com\">
+			<input type=\"hidden\" name=\"business\" value=\"ashutosh@avainfotech.com\">
 
 			<input type=\"hidden\" name=\"currency_code\" value=\"GBP\">
 

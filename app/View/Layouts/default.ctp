@@ -542,7 +542,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         
         <!-- Header section (END) -->
         
-        
         <?php echo $this->Flash->render(); ?>
         <?php echo $this->fetch('content'); ?>
         

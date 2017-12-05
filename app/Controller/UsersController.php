@@ -11727,12 +11727,58 @@ public function editservice($id=null){
 
 
 
-				$this->Order->updateAll(array('Order.service_status' => '"'.$this->request->data['value'].'"'), array('Order.id' => $this->request->data['order_id']));
+				$this->Order->updateAll(array('Order.service_status' => '"'.$this->request->data['value'].'"', 'Order.cancelled_by' => '"customer"'), array('Order.id' => $this->request->data['order_id']));
+
+                                
+                                $id = $this->request->data['order_id'];
+                                
+                                $order = $this->Order->find('first', array('conditions' => array('Order.id' => $id)));
+
+                                $user = $this->User->find('first', array('conditions' => array('User.id' => $order['Order']['uid'])));
+
+                                $therapist = $this->User->find('first', array('conditions' => array('User.id' => $order['Order']['salon_id'])));
+
+                                $admin_info = $this->User->find('first', array('conditions' => array('User.id' => 1)));
 
 
-
+                                $order['Order']['cancelled_by_name'] = $therapist['User']['first_name'].' '.$therapist['User']['last_name'];
 				
+                                /*** User Email ****/
+                                
+                                $Email = new CakeEmail();                                
+                                $Email->emailFormat('html')->template('default','usercancel')->subject('Booking Cancelled')
+                                    ->viewVars(array('orderdata_email' => $order)) 
+                                    //->viewVars(array('user' => $fu)) 
+                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                    ->to($user['User']['email'])->send();	
+                                
+                                /*** User Email (END) ****/
+                                
+                                /*** Therapist Email ****/
 
+	
+                                $Email = new CakeEmail();                                
+                                $Email->emailFormat('html')->template('default','therapistcancel')->subject('Booking Cancelled')
+                                    ->viewVars(array('orderdata_email' => $order)) 
+                                    //->viewVars(array('user' => $fu)) 
+                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                    ->to($therapist['User']['email'])->send();	
+                                
+                                /*** Therapist Email (END) ****/
+                                
+                                /*** Admin Email ****/	
+                                
+                                
+
+				$e = new CakeEmail();                                
+                                $e->emailFormat('html')->template('default','admincancel')->subject('Booking Cancelled')
+                                    ->viewVars(array('orderdata_email' => $order)) 
+                                    //->viewVars(array('user' => $fu)) 
+                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                    //->to($admin_info['User']['email'])->send();
+                                    ->to('gurpreet@avainfotech.com')->send();
+                                
+                                /*** Admin Email (END) ****/
 
 
 				echo 'success';
@@ -11773,38 +11819,64 @@ public function editservice($id=null){
 
 			$this->loadModel('OrderItem');
 
-			$cancel = $this->Order->updateAll(array('Order.service_status' => '"cancelled"'),array('Order.id' => $id));
+                        $this->Order->recursive = 2;
+                        
+			$cancel = $this->Order->updateAll(array('Order.service_status' => '"cancelled"', 'Order.cancelled_by' => '"customer"'),array('Order.id' => $id));
 
 			$order = $this->Order->find('first', array('conditions' => array('Order.id' => $id)));
 
 			
 
 			$user = $this->User->find('first', array('conditions' => array('User.id' => $order['Order']['uid'])));
+                        
+                        $therapist = $this->User->find('first', array('conditions' => array('User.id' => $order['Order']['salon_id'])));
+                        
+                        $admin_info = $this->User->find('first', array('conditions' => array('User.id' => 1)));
 
 					
-
+                        $order['Order']['cancelled_by_name'] = $user['User']['first_name'].' '.$user['User']['last_name'];
 
 
 			if ($cancel) {
 
-			
+                                /*** User Email ****/
+                                
+                                $Email = new CakeEmail();                                
+                                $Email->emailFormat('html')->template('default','usercancel')->subject('Booking Cancelled')
+                                    ->viewVars(array('orderdata_email' => $order)) 
+                                    //->viewVars(array('user' => $fu)) 
+                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                    ->to($user['User']['email'])->send();	
+                                
+                                /*** User Email (END) ****/
+                                
+                                /*** Therapist Email ****/
 
-				$ms = '<table width="500" border="0" cellpadding="10" cellspacing="0" style="margin:0px auto; background:#f0f0f0; text-align:center;"><tr style="background:#f0f0f0; "><td style="text-align:center; padding-top:5px; padding-bottom:5px; background-color: #006500; "><img src="'.FULL_BASE_URL . $this->webroot . "images/spa/logon-01.png".'" alt="img" width="16%" /></td></tr><tr><td><h2 style="font-weight:500; margin-bottom:1px;">Your Booking has been cancelled that is on '.$order["Order"]["booking_date"].' and timing from '.$order["Order"]["start_time"].' to '.$order["Order"]["end_time"].'.</h2><p style="padding-top:40px; margin-bottom:0px !important;s">Issue on behalf of<br /><span style="color:#2d2e29; font-size:20px; line-height: 29px;">MTH</span></p></td></tr></table>';
+	
+                                $Email = new CakeEmail();                                
+                                $Email->emailFormat('html')->template('default','therapistcancel')->subject('Booking Cancelled')
+                                    ->viewVars(array('orderdata_email' => $order)) 
+                                    //->viewVars(array('user' => $fu)) 
+                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                    ->to($therapist['User']['email'])->send();	
+                                
+                                /*** Therapist Email (END) ****/
+                                
+                                /*** Admin Email ****/	
+                                
+                                
 
-					
-
-				$Email = new CakeEmail();
-
-				$Email->emailFormat('html');
-
-				$Email->from(array('rahulsharma@avainfotech.com' => 'MTH'));
-
-				$Email->to($user['User']['email']);
-
-				$Email->subject('Booking Cancelled');
-
-				$Email->send($ms);
-
+				$e = new CakeEmail();                                
+                                $e->emailFormat('html')->template('default','admincancel')->subject('Booking Cancelled')
+                                    ->viewVars(array('orderdata_email' => $order)) 
+                                    //->viewVars(array('user' => $fu)) 
+                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                    //->to($admin_info['User']['email'])->send();
+                                    ->to('gurpreet@avainfotech.com')->send();
+                                
+                                /*** Admin Email (END) ****/
+                                
+                                
 	
 
 				$this->Session->setFlash(
