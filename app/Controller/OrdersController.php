@@ -126,6 +126,17 @@ class OrdersController extends AppController {
 
 ////////////////////////////////////////////////////////////
     
+    public function admin_servicestatus($id = null){
+        
+        $this->Order->updateAll(array('Order.refund_status' => '"completed"'), array('Order.id' => $id));
+        $this->Session->setFlash('Refund status updated successfully');
+        return $this->redirect(array('action' => 'index'));
+        
+    }
+
+
+////////////////////////////////////////////////////////////    
+    
      public function orderlist(){ 
           configure::write('debug', 0);
         $uid = $this->Auth->user('id');

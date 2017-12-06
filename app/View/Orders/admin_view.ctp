@@ -46,6 +46,10 @@
 					<td>Customer Email</td>
 					<td><?php echo h($order['Order']['email']); ?></td>
 				</tr>
+                                <tr>
+					<td>Customer Paypal Email</td>
+					<td><?php echo h($order['User']['paypl_email']); ?></td>
+				</tr>
                 <tr>
 					<td>Customer Phone</td>
 					<td><?php echo h($order['Order']['phone']); ?></td>

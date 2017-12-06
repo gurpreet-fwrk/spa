@@ -170,7 +170,7 @@
                 
                 $minutes = round(abs($current_date - $final_booking_time) / 60,2);
                 
-                echo $hours = ($minutes) / 60; //echo ' Hours Left<br>';
+                $hours = ($minutes) / 60; //echo ' Hours Left<br>';
                 
                 if($hours > 24){
                     echo $this->Form->postLink('Cancel Booking', array('action' => 'cancelOrder', $order["Order"]["id"]), array('class' => 'btn defult_btn btn_chdpwd'), __('Are you sure you want to cancel this order?', $order["Order"]["id"]));

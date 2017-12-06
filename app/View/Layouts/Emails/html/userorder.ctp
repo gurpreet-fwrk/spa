@@ -14,7 +14,7 @@
        <table width="100%" border="0" cellpadding="10" bgcolor="#f2f2f2" style="background-color:#e2e2e2; margin:20px 0px;">
        <thead>
        <tr>
-        <td class="pay_sum" align="left" style="text-align:left;">PAYMENT SUMMARY</td>
+        <td class="pay_sum" align="left" style="text-align:left;">BOOKING SUMMARY</td>
        </tr>
        <tr>
          <td class="order_id" align="left" style="text-align:left;">Order ID: <?php echo $orderdata_email['Order']['id']; ?></td>

@@ -60,6 +60,7 @@
                     <th><?php echo $this->Paginator->sort('paypal_price', 'Advance Paid'); ?></th>
 					<th><?php echo $this->Paginator->sort('created'); ?></th>
                     <th><?php echo $this->Paginator->sort('service_status'); ?></th>
+                    <th><?php echo $this->Paginator->sort('refund_status'); ?></th>
 					<th class="gory_blck">Actions</th>
 				</tr>
 				<?php //print_r($orders);exit;?>
@@ -83,6 +84,14 @@
                     <td><?php echo h($order['Order']['paypal_price']); ?></td>
 					<td><?php echo h($order['Order']['created']); ?></td>
                     <td><?php echo h($order['Order']['service_status']); ?></td>
+                    
+                    <?php if($order['Order']['service_status'] == 'cancelled' && $order['Order']['refund_status'] != 'completed'){ ?>
+                    <td><?php echo $this->Html->link('Pay', array('action' => 'servicestatus', $order['Order']['id'])); ?></td>
+                    <?php }else{ ?>
+                    <td><?php echo ucwords($order['Order']['refund_status']); ?></td>
+                    <?php } ?>
+                    
+                    
 					<td class="actions">
                         <?php echo $this->Html->link($this->Html->tag('i', '', array('class' => 'btn btn-info fa fa-eye', 'title' => 'View')), array('action' => 'view', $order['Order']['id']),array('escape'=>false));  ?>
 						<?php //echo $this->Html->link('Edit', array('action' => 'edit', $order['Order']['id']), array('class' => 'btn btn-success')); ?>

@@ -500,7 +500,7 @@ class AppController extends Controller {
 
                 $authorized_pages = array_map('strtolower', $authorized_pages);     
 
-                $this->set("loggedUserRole", $user_role);
+                $this->set("loggedUserRole", $this->Auth->user('role'));
 
                 $this->set("authocss", $authorized_pages);
 
