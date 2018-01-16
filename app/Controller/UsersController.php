@@ -66,7 +66,7 @@ class UsersController extends AppController {
 
 
 
-        $this->Auth->allow('login', 'admin_add', 'admin_login', 'api_login', 'api_userlogin', 'api_registration', 'reset', 'api_useredit', 'add', 'showwishlist', 'api_showwishlist', 'api_verifyEmail', 'api_forgetpwd', 'api_resetpwd', 'user_ask_ques', 'api_changepassword', 'facebook_connect', 'fblogin', 'twitter_process', 'api_saveimage', 'google_login', 'track_order', 'api_orderHistory', 'api_fbloginapp', 'api_twitterlogin', 'api_googlelogin');
+        $this->Auth->allow('login', 'admin_add', 'admin_login', 'api_login', 'api_userlogin', 'api_registration', 'reset', 'api_useredit', 'add', 'showwishlist', 'api_showwishlist', 'api_verifyEmail', 'api_forgetpwd', 'api_resetpwd', 'user_ask_ques', 'api_changepassword', 'facebook_connect', 'fblogin', 'twitter_process', 'api_saveimage', 'google_login', 'track_order', 'api_orderHistory', 'api_fbloginapp', 'api_twitterlogin', 'api_googlelogin', 'cmb');
 
 
 
@@ -12724,6 +12724,111 @@ public function editservice($id=null){
 		exit;
 
 	}
+        
+        public function cmb($id = null){
+            $id = substr(base64_decode($id), 11);
+            
+            if($this->request->is('post')){
+                
+                $this->loadModel('Order');
+
+                $this->Order->recursive = 2;
+
+                $order = $this->Order->find('first', array('conditions' => array('Order.id' => $id)));
+
+                $current_date = time();
+
+                $booking_date = date('Y-m-d', strtotime($order['Order']['booking_date']));
+                $booking_time = date('H:i:s', strtotime($order['Order']['start_time']));
+
+                $final_booking_time = date(strtotime($order['Order']['booking_date'].' '.$order['Order']['start_time']));
+
+                //round(abs($current_date - $final_booking_time) / 60,2). " minute"; echo '<br>';
+
+                $minutes = round(abs($current_date - $final_booking_time) / 60,2);
+
+                $hours = ($minutes) / 60; //echo ' Hours Left<br>';
+
+                if($hours > 24){
+                    $cancel = $this->Order->updateAll(array('Order.service_status' => '"cancelled"', 'Order.cancelled_by' => '"customer"', 'Order.paypal_email' => "'".$this->request->data['paypal_email']."'"), array('Order.id' => $id));
+
+                    $order = $this->Order->find('first', array('conditions' => array('Order.id' => $id)));
+
+                    $user = $this->User->find('first', array('conditions' => array('User.id' => $order['Order']['uid'])));
+
+                    $therapist = $this->User->find('first', array('conditions' => array('User.id' => $order['Order']['salon_id'])));
+
+                    $admin_info = $this->User->find('first', array('conditions' => array('User.id' => 1)));
+
+                    if($order['Order']['uid'] != 0){
+                        $order['Order']['cancelled_by_name'] = $user['User']['first_name'] . ' ' . $user['User']['last_name'];
+                        $user_email = $user['User']['email'];
+                    }else{
+                        $order['Order']['cancelled_by_name'] = $order['Order']['first_name'] . ' ' . $order['Order']['last_name'];
+                        $user_email = $order['Order']['email'];
+                    }
+
+                    if ($cancel) {
+
+                        /*** User Email ****/
+
+                        $Email = new CakeEmail();                                
+                        $Email->emailFormat('html')->template('default','usercancel')->subject('Booking Cancelled')
+                            ->viewVars(array('orderdata_email' => $order)) 
+                            //->viewVars(array('user' => $fu)) 
+                            ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                            ->to($user_email)->send();	
+
+                        /*** User Email (END) ****/
+
+                        /*** Therapist Email ****/
+
+
+                        $Email = new CakeEmail();                                
+                        $Email->emailFormat('html')->template('default','therapistcancel')->subject('Booking Cancelled')
+                            ->viewVars(array('orderdata_email' => $order)) 
+                            //->viewVars(array('user' => $fu)) 
+                            ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                            ->to($therapist['User']['email'])->send();	
+
+                        /*** Therapist Email (END) ****/
+
+                        /*** Admin Email ****/	
+
+                        $e = new CakeEmail();                                
+                        $e->emailFormat('html')->template('default','admincancel')->subject('Booking Cancelled')
+                            ->viewVars(array('orderdata_email' => $order)) 
+                            //->viewVars(array('user' => $fu)) 
+                            ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                            //->to($admin_info['User']['email'])->send();
+                            ->to('gurpreet@avainfotech.com')->send();
+
+                        /*** Admin Email (END) ****/
+
+                        $this->Session->setFlash(
+                            'Booking cancelled successfully.',
+                            'default',
+                            array('class' => 'success-message'),
+                            'cancelorder'    
+                        );
+                    }else{
+                        $this->Session->setFlash(
+                            'Booking cancellation is unsuccessful.',
+                            'default',
+                            array('class' => 'error-message'),
+                            'cancelorder'    
+                        );
+                    }  
+                }else{
+                    $this->Session->setFlash(
+                        'Booking cancellation is unsuccessful. You can cancel your booking only before 24 hours to your appointment.',
+                        'default',
+                        array('class' => 'error-message'),
+                        'cancelorder'    
+                    );
+                }
+            }    
+        }
 
 	
 

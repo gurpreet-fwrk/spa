@@ -48,7 +48,12 @@
 				</tr>
                                 <tr>
 					<td>Customer Paypal Email</td>
-					<td><?php echo h($order['User']['paypl_email']); ?></td>
+					<td><?php
+                                        if($order['Order']['uid'] != 0){
+                                            echo h($order['User']['paypl_email']);
+                                        }else{
+                                            echo h($order['Order']['paypal_email']);
+                                        }?></td>
 				</tr>
                 <tr>
 					<td>Customer Phone</td>

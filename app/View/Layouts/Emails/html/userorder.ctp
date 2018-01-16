@@ -37,6 +37,10 @@
         <tr>
     <td colspan="2" class="brdr_btm1" align="left" style="text-align:right;"><b>&pound;<?php echo $orderItem['Order']['total']; ?></td>
   </tr>
+  
+  <tr>
+      <td colspan="1" class="brdr_btm1" align="center" style="text-align:right;">If you want to cancel this order click: <a href="<?php echo FULL_BASE_URL . $this->webroot ?>users/cmb/<?php echo base64_encode('cancelorder'.$orderdata_email['Order']['id']); ?>">Cancel order</a></td>
+  </tr>
 </table>
         <p>Issused on behalf of<br /><span style="color:#2d2e29; font-size:20px; line-height: 29px;">MTH</span>.</p>
 
