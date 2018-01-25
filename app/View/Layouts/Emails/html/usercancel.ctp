@@ -13,9 +13,9 @@
             
             <?php if($orderdata_email['Order']['cancelled_by'] == 'customer'){ ?>
             
-            Your Booking has been canceled.
+            Your Booking has been cancelled.
             <?php }else{ ?>
-            Your Booking has been canceled by therapist.
+            Your Booking has been cancelled by therapist.
             <?php } ?>
             
         </h2>
@@ -47,7 +47,7 @@
     <td colspan="2" class="brdr_btm1" align="left" style="text-align:right;"><b>&pound;<?php echo $orderItem['Order']['total']; ?></td>
   </tr>
 </table>
-        <p>Issused on behalf of<br /><span style="color:#2d2e29; font-size:20px; line-height: 29px;">MTH</span>.</p>
+        <p>Issued on behalf of<br /><span style="color:#2d2e29; font-size:20px; line-height: 29px;">MTH</span>.</p>
 
     </td>
   </tr>

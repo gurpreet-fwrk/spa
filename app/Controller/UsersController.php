@@ -11708,7 +11708,7 @@ public function editservice($id=null){
 
 
 		
-
+            //Configure:write('debug', 2);
 
 
 		$this->loadModel('Order');
@@ -11724,13 +11724,10 @@ public function editservice($id=null){
 
 
 			if($this->request->data['order_id']){
-
-
-
-				$this->Order->updateAll(array('Order.service_status' => '"'.$this->request->data['value'].'"', 'Order.cancelled_by' => '"customer"'), array('Order.id' => $this->request->data['order_id']));
-
                                 
                                 $id = $this->request->data['order_id'];
+                                
+                                $this->Order->recursive = 2;
                                 
                                 $order = $this->Order->find('first', array('conditions' => array('Order.id' => $id)));
 
@@ -11740,48 +11737,53 @@ public function editservice($id=null){
 
                                 $admin_info = $this->User->find('first', array('conditions' => array('User.id' => 1)));
 
+                                if($this->request->data['value'] == 'cancelled'){
+                                
+                                    $this->Order->updateAll(array('Order.service_status' => '"'.$this->request->data['value'].'"', 'Order.cancelled_by' => '"therapist"'), array('Order.id' => $this->request->data['order_id']));
 
-                                $order['Order']['cancelled_by_name'] = $therapist['User']['first_name'].' '.$therapist['User']['last_name'];
-				
-                                /*** User Email ****/
-                                
-                                $Email = new CakeEmail();                                
-                                $Email->emailFormat('html')->template('default','usercancel')->subject('Booking Cancelled')
-                                    ->viewVars(array('orderdata_email' => $order)) 
-                                    //->viewVars(array('user' => $fu)) 
-                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
-                                    ->to($user['User']['email'])->send();	
-                                
-                                /*** User Email (END) ****/
-                                
-                                /*** Therapist Email ****/
+                                    $order['Order']['cancelled_by_name'] = $therapist['User']['first_name'].' '.$therapist['User']['last_name'];
 
-	
-                                $Email = new CakeEmail();                                
-                                $Email->emailFormat('html')->template('default','therapistcancel')->subject('Booking Cancelled')
-                                    ->viewVars(array('orderdata_email' => $order)) 
-                                    //->viewVars(array('user' => $fu)) 
-                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
-                                    ->to($therapist['User']['email'])->send();	
-                                
-                                /*** Therapist Email (END) ****/
-                                
-                                /*** Admin Email ****/	
-                                
-                                
+                                    /*** User Email ****/
 
-				$e = new CakeEmail();                                
-                                $e->emailFormat('html')->template('default','admincancel')->subject('Booking Cancelled')
-                                    ->viewVars(array('orderdata_email' => $order)) 
-                                    //->viewVars(array('user' => $fu)) 
-                                    ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
-                                    //->to($admin_info['User']['email'])->send();
-                                    ->to('gurpreet@avainfotech.com')->send();
-                                
-                                /*** Admin Email (END) ****/
+                                    $Email = new CakeEmail();                                
+                                    $Email->emailFormat('html')->template('default','usercancel')->subject('Booking Cancelled')
+                                        ->viewVars(array('orderdata_email' => $order)) 
+                                        //->viewVars(array('user' => $fu)) 
+                                        ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                        ->to($user['User']['email'])->send();	
+
+                                    /*** User Email (END) ****/
+
+                                    /*** Therapist Email ****/
 
 
-				echo 'success';
+                                    $Email = new CakeEmail();                                
+                                    $Email->emailFormat('html')->template('default','therapistcancel')->subject('Booking Cancelled')
+                                        ->viewVars(array('orderdata_email' => $order)) 
+                                        //->viewVars(array('user' => $fu)) 
+                                        ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                        ->to($therapist['User']['email'])->send();	
+
+                                    /*** Therapist Email (END) ****/
+
+                                    /*** Admin Email ****/	
+
+
+
+                                    $e = new CakeEmail();                                
+                                    $e->emailFormat('html')->template('default','admincancel')->subject('Booking Cancelled')
+                                        ->viewVars(array('orderdata_email' => $order)) 
+                                        //->viewVars(array('user' => $fu)) 
+                                        ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+                                        //->to($admin_info['User']['email'])->send();
+                                        ->to('gurpreet@avainfotech.com')->send();
+
+                                    /*** Admin Email (END) ****/
+                                }else{
+                                    $this->Order->updateAll(array('Order.service_status' => '"'.$this->request->data['value'].'"', 'Order.cancelled_by' => null), array('Order.id' => $this->request->data['order_id']));
+                                }
+
+                                echo 'success';
 
 
 
@@ -11836,44 +11838,49 @@ public function editservice($id=null){
 					
                         $order['Order']['cancelled_by_name'] = $user['User']['first_name'].' '.$user['User']['last_name'];
 
-
+                        if($order['Order']['uid'] != 0){
+                            $order['Order']['cancelled_by_name'] = $user['User']['first_name'] . ' ' . $user['User']['last_name'];
+                            $user_email = $user['User']['email'];
+                        }else{
+                            $order['Order']['cancelled_by_name'] = $order['Order']['first_name'] . ' ' . $order['Order']['last_name'];
+                            $user_email = $order['Order']['email'];
+                        }
+                        
 			if ($cancel) {
 
                                 /*** User Email ****/
-                                
+
                                 $Email = new CakeEmail();                                
                                 $Email->emailFormat('html')->template('default','usercancel')->subject('Booking Cancelled')
                                     ->viewVars(array('orderdata_email' => $order)) 
                                     //->viewVars(array('user' => $fu)) 
                                     ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
-                                    ->to($user['User']['email'])->send();	
-                                
+                                    ->to($user_email)->send();	
+
                                 /*** User Email (END) ****/
-                                
+
                                 /*** Therapist Email ****/
 
-	
+
                                 $Email = new CakeEmail();                                
                                 $Email->emailFormat('html')->template('default','therapistcancel')->subject('Booking Cancelled')
                                     ->viewVars(array('orderdata_email' => $order)) 
                                     //->viewVars(array('user' => $fu)) 
                                     ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
                                     ->to($therapist['User']['email'])->send();	
-                                
-                                /*** Therapist Email (END) ****/
-                                
-                                /*** Admin Email ****/	
-                                
-                                
 
-				$e = new CakeEmail();                                
+                                /*** Therapist Email (END) ****/
+
+                                /*** Admin Email ****/	
+
+                                $e = new CakeEmail();                                
                                 $e->emailFormat('html')->template('default','admincancel')->subject('Booking Cancelled')
                                     ->viewVars(array('orderdata_email' => $order)) 
                                     //->viewVars(array('user' => $fu)) 
                                     ->from(array('rahulsharma@avainfotech.com' => 'MTH'))
                                     //->to($admin_info['User']['email'])->send();
                                     ->to('gurpreet@avainfotech.com')->send();
-                                
+
                                 /*** Admin Email (END) ****/
                                 
                                 
@@ -12806,7 +12813,7 @@ public function editservice($id=null){
                         /*** Admin Email (END) ****/
 
                         $this->Session->setFlash(
-                            'Booking cancelled successfully.',
+                            'Booking cancelled successfully. Your refund will be initiated soon and money will be refunded within 7-8 working days.',
                             'default',
                             array('class' => 'success-message'),
                             'cancelorder'    

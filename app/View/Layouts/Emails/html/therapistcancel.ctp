@@ -11,7 +11,7 @@
     <td>
     	<h2>
             
-            Booking has been canceled.
+            Booking has been cancelled.
             
         </h2>
         <p></p>

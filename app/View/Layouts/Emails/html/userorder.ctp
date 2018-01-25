@@ -39,7 +39,13 @@
   </tr>
   
   <tr>
-      <td colspan="1" class="brdr_btm1" align="center" style="text-align:right;">If you want to cancel this order click: <a href="<?php echo FULL_BASE_URL . $this->webroot ?>users/cmb/<?php echo base64_encode('cancelorder'.$orderdata_email['Order']['id']); ?>">Cancel order</a></td>
+      <td colspan="1" class="brdr_btm1" align="center" style="text-align:left;">
+          <?php if($orderdata_email['Order']['uid'] == '0'){ ?>
+          You can cancel your booking 24 hours prior the appointment date in case of any emergency. <a href="<?php echo FULL_BASE_URL . $this->webroot ?>users/cmb/<?php echo base64_encode('cancelorder'.$orderdata_email['Order']['id']); ?>">Click here</a> to cancel.
+          <?php }else{ ?>
+          You can cancel your booking 24 hours prior the appointment date in case of any emergency.
+          <?php } ?>
+      </td>
   </tr>
 </table>
         <p>Issused on behalf of<br /><span style="color:#2d2e29; font-size:20px; line-height: 29px;">MTH</span>.</p>

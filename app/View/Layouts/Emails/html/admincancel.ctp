@@ -12,7 +12,7 @@
     	<h2>
             Hi Admin,<br>
 
-The booking with below details has been canceled by <?php echo $orderdata_email['Order']['cancelled_by'].'-'.$orderdata_email['Order']['cancelled_by_name']; ?>. Please initiate the fund of &#163;5</h2>
+The booking with below details has been cancelled by<?php echo $orderdata_email['Order']['cancelled_by'].'- '.$orderdata_email['Order']['cancelled_by_name']; ?>. Please initiate the fund of &#163;5</h2>
         <p></p>
        <table width="100%" border="0" cellpadding="10" bgcolor="#f2f2f2" style="background-color:#e2e2e2; margin:20px 0px;">
        <thead>

@@ -38,10 +38,6 @@
     <td colspan="2" class="brdr_btm1" align="left" style="text-align:right;"><b>&pound;<?php echo $orderItem['Order']['total']; ?></td>
   </tr>
   
-  <tr>
-      <td colspan="1" class="brdr_btm1" align="center" style="text-align:left;">You can cancel this booking upto 24 hours from now in case of any emergency.</td>
-  </tr>
-  
 </table>
 		<p style="color:#000; text-transform:uppercase"><strong><?php echo isset($orderItem['customer_type']) ? $orderItem['customer_type'] : ''; ; ?></strong></p>
         <p>Issused on behalf of<br /><span style="color:#2d2e29; font-size:20px; line-height: 29px;">MTH</span>.</p>

@@ -1,5 +1,5 @@
 <?php //echo "<pre>"; print_r($orders); echo "</pre>"; ?>
-
+<style>.service_status.disabled{background: #dadada !important;}</style>
 <div class="available_table">
     <div class="container">
     	<?php echo $this->Session->flash('bookings'); ?>
@@ -47,7 +47,15 @@
                         Cancelled
                         <?php } ?>
                         <?php }else{ ?>
-                        <select name="service_status" data-id="<?php echo $order['Order']['id']; ?>">
+                        
+                        <?php //if($order['Order']['cancelled_by'] == 'customer'){
+                        if($order['Order']['service_status'] == 'cancelled'){
+                            $disabled = ' disabled';
+                        }else{
+                            $disabled = '';
+                        } ?>
+                        
+                        <select name="service_status" class="service_status<?php echo $disabled; ?>" data-id="<?php echo $order['Order']['id']; ?>"<?php echo $disabled; ?>>
                         	<?php if($order['Order']['service_status'] == 'pending'){ ?>
                             <option value="pending" selected="selected">Pending</option>
                             <?php } else { ?>
@@ -74,7 +82,7 @@
 
                             $minutes = round(abs($current_date - $final_booking_time) / 60,2);
 
-                            echo $hours = ($minutes) / 60; //echo ' Hours Left<br>';
+                            $hours = ($minutes) / 60; //echo ' Hours Left<br>';
 
                             if($hours < 24){
 

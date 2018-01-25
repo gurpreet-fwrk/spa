@@ -315,7 +315,7 @@ configure::write('debug', 2);
 
     public function success() {
 
-	//Configure::write('debug', 2);
+	Configure::write('debug', 2);
 
         $shop = $this->Session->read('Shop');
 
@@ -331,7 +331,7 @@ configure::write('debug', 2);
 		
 		$this->Order->recursive = 2;
 		$orderdata_email = $this->Order->find("first", array("conditions" => array("Order.id" => $order_id)));
-		
+		//echo "<pre>"; print_r($orderdata_email); echo "</pre>";
 		$user_id = $orderdata_email['Order']['uid'];
 		
 		$customer_type = '';
@@ -348,6 +348,7 @@ configure::write('debug', 2);
 		}
 		
 		$orderdata_email['customer_type'] = $customer_type;
+          
 		
 		$l = new CakeEmail();   
 		$l->emailFormat('html')->template('default','userorder')->subject('MTH Booking')
@@ -362,6 +363,13 @@ configure::write('debug', 2);
 			//->viewVars(array('user' => $fu)) 
 			->from(array('rahulsharma@avainfotech.com' => 'MTH'))
 			->to($orderdata_email['Salon']['email'])->send();	
+                
+                $f = new CakeEmail();   
+		$f->emailFormat('html')->template('default','superadminorder')->subject('MTH Booking (Admin)')
+			->viewVars(array('orderdata_email' => $orderdata_email)) 
+			//->viewVars(array('user' => $fu)) 
+			->from(array('rahulsharma@avainfotech.com' => 'MTH'))
+			->to('gurpreet@avainfotech.com')->send();	
 							
 		if($order_id != '0'){
 

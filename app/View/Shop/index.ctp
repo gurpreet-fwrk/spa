@@ -233,7 +233,7 @@
 									</figure>
 								</div>
 								<div class="bottom-sec">
-									<p>If you feel you are not satisfied with our services, please do let us know all complaints will be followed up and dealt with.</p>
+									<p>If you feel you are not satisfied with our services, please do let us know all, complaints will be followed up and dealt with.</p>
 								</div>
 							</div>
 						</div>

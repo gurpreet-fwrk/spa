@@ -61,10 +61,10 @@
             </div>
           </div>
           <?php } ?>
-          <?php if($shop['Guest']['first_name'] || $loggeduser){ ?>
+          <?php if(isset($shop['Guest']['first_name']) || $loggeduser){ ?>
           <div class="method_pay">
             <h4>Select the Payment Method</h4>
-            <span>You will now need to pay a £5 deposit to guarantee the appointment and the rest will need to be paid directly to the therapist on competition of your treatment.</span>
+            <span>You will now need to pay a £5 deposit to guarantee the appointment and the rest will need to be paid directly to the therapist on completion of your treatment.</span>
             <br />
             <hr />
             <input type="checkbox" name="t_a_c" id="t_a_c" />I accept the <a href="<?php echo $this->webroot; ?>staticpage/53">terms and conditions</a>.

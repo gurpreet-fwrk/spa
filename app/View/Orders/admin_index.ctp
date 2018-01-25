@@ -11,10 +11,22 @@
         	<div class="col-sm-6">
             	<form id="" method="post" class="pull-right set_rght" action="<?php echo $this->webroot?>admin/orders">
                     <div class="search_user">
-                        <button type="submit" class="search_button1 btn btn-primary pull-right adj_crt">Search</button>
-                        <input type="text" name="data[Order][start_date]" id="start_date" placehoder="Start Date" value="<?php echo $start_date; ?>" />
-                        <input type="text" name="data[Order][end_date]" id="end_date" placehoder="Start Date" value="<?php echo $end_date; ?>"/>
-                        <select name="data[Order][store]" id="store" class="form-control sft_non" required>
+                        
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                            <input type="text" name="data[Order][start_date]" id="start_date" class="form-control" placeholder="Start Date" value="<?php echo $start_date; ?>" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                            <input type="text" name="data[Order][end_date]" id="end_date" class="form-control" placeholder="Start Date" value="<?php echo $end_date; ?>"/>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-10">
+                        <div class="form-group">
+                        <select name="data[Order][store]" id="store" class="form-control" required>
                             <option value="">Select Store</option>
                             <?php foreach($stores as $st){ ?>
                             <?php if($st['User']['store_name'] != '' ){ ?>
@@ -26,25 +38,50 @@
                             <?php } ?>
                             <?php } ?>
                         </select>
+                        </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                        <button type="submit" class="search_button1 btn btn-primary pull-right adj_crt">Search</button>
+                        </div>
+                        
                     </div>
                 </form>
                 <label>Filter By Date</label>
             </div>
 			<div class="col-sm-6">
                 <div class="up-img_sec"> 
-                    <a href="" class="btn btn-danger pull-right gap_script">View All</a>
+                    
                     <form id="" method="post" class="pull-right set_rght" action="<?php echo $this->webroot?>admin/orders">
                         <div class="search_user">
-                            <button type="submit" class="search_button1 btn btn-primary pull-right adj_crt">Search</button>
-                            <input type="text" class="form-control pull-right srch_col" name=data[Order][search] placeholder="Search By Keyword Value" value="<?php echo $keyword; ?>" required>
-                            <select name="data[Order][type]" class="form-control sft_non" required>
-                            <option value="">Search by Keyword</option>
-                            <option value="id">Booking ID</option>
-                            <option value="first_name">First Name</option>
-                            <option value="email">Email</option>
-                            </select>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name=data[Order][search] placeholder="Search By Keyword Value" value="<?php echo $keyword; ?>" required>
+                                </div>
+                            </div>   
+                            
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <select name="data[Order][type]" class="form-control" required>
+                                    <option value="">Search by Keyword</option>
+                                    <option value="id">Booking ID</option>
+                                    <option value="first_name">First Name</option>
+                                    <option value="email">Email</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button type="submit" class="search_button1 btn btn-primary pull-right adj_crt">Search</button>
+                                </div>
+                            </div>    
                         </div>
                     </form>
+                    
+                </div>
+                <div class="col-md-12">
+                     <a href="" class="btn btn-danger pull-right gap_script">View All</a>
                 </div>
             </div>
 			<table class="table table-bordered table-hover">

@@ -507,7 +507,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
             <div class="smart_search">
                 <div class="container">
                     <div class="search_area">
-                        <h3 class="treatment_right">Enticing treatment in My Treatment Hub<br> with highly trained experts</h3>
+                        <h3 class="treatment_right">Enjoy professional treatments with<br> highly trained experts</h3>
                         <h2>Book your wellness appointment with the click of a button</h2>
                         <form action="<?php echo $this->webroot; ?>salon/search" method="post">
                         <ul>
@@ -569,8 +569,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
                                 <ul>
                                 	<?php if(!empty($pages)){ ?>
                                 	<?php foreach($pages as $page){ ?>
+                                    <?php if($page['Staticpage']['title'] != 'Privacy Policy'){ ?>
                                     <li><a class="blck_ftr" href="<?php echo $this->webroot ?>staticpage/<?php echo $page['Staticpage']['id']; ?>"><?php echo $page['Staticpage']['title']; ?></a></li>
-                                    <?php } ?>
+                                    <?php }} ?>
                                     <?php } ?>
                                     <li><?php  echo $this->Html->link('Contact Us', array('controller' => 'contacts', 'action' => 'index'), array('class' => 'blck_ftr'));?></li>
                                   

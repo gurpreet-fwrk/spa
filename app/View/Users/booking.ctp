@@ -159,21 +159,26 @@
             if($loggeduser == $order['Order']['uid']){
                 $current_date = time();
                 
-                
                 $booking_date = date('Y-m-d', strtotime($order['Order']['booking_date']));
                 $booking_time = date('H:i:s', strtotime($order['Order']['start_time']));
                 
                 
                 $final_booking_time = date(strtotime($order['Order']['booking_date'].' '.$order['Order']['start_time']));
-                
                 //round(abs($current_date - $final_booking_time) / 60,2). " minute"; echo '<br>';
                 
                 $minutes = round(abs($current_date - $final_booking_time) / 60,2);
-                
                 $hours = ($minutes) / 60; //echo ' Hours Left<br>';
                 
-                if($hours > 24){
-                    echo $this->Form->postLink('Cancel Booking', array('action' => 'cancelOrder', $order["Order"]["id"]), array('class' => 'btn defult_btn btn_chdpwd'), __('Are you sure you want to cancel this order?', $order["Order"]["id"]));
+                if($hours > 24 && $current_date < $final_booking_time){
+                    if($order['Order']['service_status'] != 'cancelled'){
+                        echo $this->Form->postLink('Cancel Booking', array('action' => 'cancelOrder', $order["Order"]["id"]), array('class' => 'btn defult_btn btn_chdpwd'), __('Are you sure you want to cancel this order?', $order["Order"]["id"]));
+                    }elseif($order['Order']['service_status'] == 'cancelled'){
+                        echo '<div class="alert alert-success">This Booking has been cancelled.</div>';
+                    }
+                }elseif($order['Order']['service_status'] == 'cancelled'){
+                    echo '<div class="alert alert-success">This Booking has been cancelled.</div>';
+                }else{
+                    echo '<div class="alert alert-warning">You cannot cancel this Booking as cancellation period has expired.</div>';
                 }
                 
             ?>
